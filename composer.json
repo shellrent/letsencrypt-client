@@ -1,10 +1,13 @@
 {
-    "name": "yourivw/leclient",
+    "name": "shellrent/letsencrypt-client",
     "type": "library",
     "description": "PHP LetsEncrypt client library for ACME v2",
     "license": "MIT",
     "require": {
-        "php": ">=5.2"
+        "php": ">=5.2",
+	    "ext-openssl": "*",
+        "ext-json": "*",
+        "ext-curl": "*"
     },
     "autoload": {
         "psr-4": {
