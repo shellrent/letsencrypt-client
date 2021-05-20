@@ -51,6 +51,7 @@ class LEOrder
 	public $expires;
 	public $identifiers;
 	private $authorizationURLs;
+	/** @var LEAuthorization[] */
 	public $authorizations;
 	public $finalizeURL;
 	public $certificateURL;
@@ -414,11 +415,27 @@ class LEOrder
 											}
 											elseif($this->log >= LEClient::LOG_STATUS) LEFunctions::log('HTTP challenge for \'' . $identifier . '\' valid.', 'function verifyPendingOrderAuthorization');
 										}
+										
+										$i = 1;
+										
 										while($auth->status == 'pending')
 										{
+											if( $i > 6 )
+											{
+												break;
+											}
+											
 											sleep(1);
 											$auth->updateData();
+											
+											$i++;
 										}
+										
+										if($auth->status == 'pending')
+										{
+											return false;
+										}
+										
 										return true;
 									}
 								}
@@ -447,11 +464,27 @@ class LEOrder
 											}
 											elseif($this->log >= LEClient::LOG_STATUS) LEFunctions::log('DNS challenge for \'' . $identifier . '\' valid.', 'function verifyPendingOrderAuthorization');
 										}
+										
+										$i = 1;
+										
 										while($auth->status == 'pending')
 										{
+											if( $i > 6 )
+											{
+												break;
+											}
+											
 											sleep(1);
 											$auth->updateData();
+											
+											$i++;
 										}
+										
+										if($auth->status == 'pending')
+										{
+											return false;
+										}
+										
 										return true;
 									}
 								}

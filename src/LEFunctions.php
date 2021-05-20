@@ -235,7 +235,9 @@ class LEFunctions
 			{
 				if($answer->type === 16)
 				{
+					/* Since May 19th, this check always fails because the comparison should take place without the quotes; let's keep both just to be sure */
 					if($answer->data === ('"' . $DNSDigest . '"')) return true;
+					if($answer->data === $DNSDigest) return true;
 				}
 			}
 		}
