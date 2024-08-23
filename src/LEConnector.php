@@ -57,31 +57,42 @@ class LEConnector
 
     /**
      * Initiates the LetsEncrypt Connector class.
-     *
      * @param int 		$log			The level of logging. Defaults to no logging. LOG_OFF, LOG_STATUS, LOG_DEBUG accepted.
      * @param string	$baseURL 		The LetsEncrypt server URL to make requests to.
      * @param array		$accountKeys 	Array containing location of account keys files.
+     * @param array     $leDirectoryConfig Optional array containing URLs obtained by "/directory" API
      */
-	public function __construct($log, $baseURL, $accountKeys)
+	public function __construct($log, $baseURL, $accountKeys, $leDirectoryConfig = null)
 	{
 		$this->baseURL = $baseURL;
 		$this->accountKeys = $accountKeys;
 		$this->log = $log;
-		$this->getLEDirectory();
+		$this->getLEDirectory( $leDirectoryConfig );
 		$this->getNewNonce();
 	}
 
     /**
      * Requests the LetsEncrypt Directory and stores the necessary URLs in this LetsEncrypt Connector instance.
+     * @param array $leDirectoryConfig Optional array containing URLs obtained by "/directory" API
      */
-	private function getLEDirectory()
+	private function getLEDirectory( $leDirectoryConfig = null )
 	{
-		$req = $this->get('/directory');
-		$this->keyChange = $req['body']['keyChange'];
-		$this->newAccount = $req['body']['newAccount'];
-		$this->newNonce = $req['body']['newNonce'];
-		$this->newOrder = $req['body']['newOrder'];
-		$this->revokeCert = $req['body']['revokeCert'];
+		if( $leDirectoryConfig ) {
+			$this->keyChange = $leDirectoryConfig['keyChange'];
+			$this->newAccount = $leDirectoryConfig['newAccount'];
+			$this->newNonce = $leDirectoryConfig['newNonce'];
+			$this->newOrder = $leDirectoryConfig['newOrder'];
+			$this->revokeCert = $leDirectoryConfig['revokeCert'];
+			
+		} else {
+			$req = $this->get('/directory');
+			
+			$this->keyChange = $req['body']['keyChange'];
+			$this->newAccount = $req['body']['newAccount'];
+			$this->newNonce = $req['body']['newNonce'];
+			$this->newOrder = $req['body']['newOrder'];
+			$this->revokeCert = $req['body']['revokeCert'];
+		}
 	}
 
     /**

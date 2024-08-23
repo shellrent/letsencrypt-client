@@ -64,8 +64,9 @@ class LEClient
      * @param array 	$certificateKeys 	Optional array containing location of all certificate files. Required paths are public_key, private_key, order and certificate/fullchain_certificate (you can use both or only one of them)
      * @param string 	$accountKeys 		The directory in which the account keys are stored. Is a subdir inside $certificateKeys. Defaults to '__account/'.(optional)
      * @param array 	$accountKeys 		Optional array containing location of account private and public keys. Required paths are private_key, public_key.
+     * @param array 	$leDirectoryConfig 	Optional array containing URLs obtained by "/directory" API
      */
-	public function __construct($email, $acmeURL = LEClient::LE_PRODUCTION, $log = LEClient::LOG_OFF, $certificateKeys = 'keys/', $accountKeys = '__account/')
+	public function __construct($email, $acmeURL = LEClient::LE_PRODUCTION, $log = LEClient::LOG_OFF, $certificateKeys = 'keys/', $accountKeys = '__account/', $leDirectoryConfig = null)
 	{
 		$this->log = $log;
 
@@ -152,7 +153,7 @@ class LEClient
 			throw LEClientException::InvalidArgumentException('accountKeys must be string or array.');
 		}
 
-		$this->connector = new LEConnector($this->log, $this->baseURL, $this->accountKeys);
+		$this->connector = new LEConnector($this->log, $this->baseURL, $this->accountKeys, $leDirectoryConfig);
 		$this->account = new LEAccount($this->connector, $this->log, $email, $this->accountKeys);
 		
 		if($this->log instanceof \Psr\Log\LoggerInterface) 
@@ -171,6 +172,17 @@ class LEClient
 	public function getAccount()
 	{
 		return $this->account;
+	}
+
+
+    /**
+     * Returns the LetsEncrypt connector used in the current client.
+     *
+	 * @return LEConnector
+     */
+	public function getConnector()
+	{
+		return $this->connector;
 	}
 
     /**
