@@ -65,6 +65,7 @@ class LEClient
      * @param string 	$accountKeys 		The directory in which the account keys are stored. Is a subdir inside $certificateKeys. Defaults to '__account/'.(optional)
      * @param array 	$accountKeys 		Optional array containing location of account private and public keys. Required paths are private_key, public_key.
      * @param array 	$leDirectoryConfig 	Optional array containing URLs obtained by "/directory" API
+     * @param LEConnector 	$connector 	Connector
      */
 	public function __construct($email, $acmeURL = LEClient::LE_PRODUCTION, $log = LEClient::LOG_OFF, $certificateKeys = 'keys/', $accountKeys = '__account/', $leDirectoryConfig = null, $connector = null)
 	{
