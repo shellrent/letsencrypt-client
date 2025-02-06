@@ -66,7 +66,7 @@ class LEClient
      * @param array 	$accountKeys 		Optional array containing location of account private and public keys. Required paths are private_key, public_key.
      * @param array 	$leDirectoryConfig 	Optional array containing URLs obtained by "/directory" API
      */
-	public function __construct($email, $acmeURL = LEClient::LE_PRODUCTION, $log = LEClient::LOG_OFF, $certificateKeys = 'keys/', $accountKeys = '__account/', $leDirectoryConfig = null)
+	public function __construct($email, $acmeURL = LEClient::LE_PRODUCTION, $log = LEClient::LOG_OFF, $certificateKeys = 'keys/', $accountKeys = '__account/', $leDirectoryConfig = null, $connector = null)
 	{
 		$this->log = $log;
 
@@ -153,7 +153,12 @@ class LEClient
 			throw LEClientException::InvalidArgumentException('accountKeys must be string or array.');
 		}
 
-		$this->connector = new LEConnector($this->log, $this->baseURL, $this->accountKeys, $leDirectoryConfig);
+		if ( !$connector ) {
+			$this->connector = new LEConnector($this->log, $this->baseURL, $this->accountKeys, $leDirectoryConfig);
+		} else {
+			$this->connector = $connector;
+		}
+		
 		$this->account = new LEAccount($this->connector, $this->log, $email, $this->accountKeys);
 		
 		if($this->log instanceof \Psr\Log\LoggerInterface) 

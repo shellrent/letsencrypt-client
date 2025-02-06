@@ -112,7 +112,7 @@ class LEConnector
      *
      * @return array 	Returns an array with the keys 'request', 'header', 'status' and 'body'.
      */
-	private function request($method, $URL, $data = null)
+	protected function request($method, $URL, $data = null)
 	{
 		if($this->accountDeactivated) throw LEConnectorException::AccountDeactivatedException();
 
