@@ -132,12 +132,12 @@ class LEAccount
 		if($post['status'] === 200)
 		{
 			$this->id = isset($post['body']['id']) ? $post['body']['id'] : '';
-			$this->key = $post['body']['key'];
-			$this->contact = $post['body']['contact'];
+			$this->key =isset($post['body']['key']) ? $post['body']['key'] : '';
+			$this->contact = isset($post['body']['contract']) ? $post['body']['contract'] : '';
 			$this->agreement = isset($post['body']['agreement']) ? $post['body']['agreement'] : '';
-			$this->initialIp = $post['body']['initialIp'];
-			$this->createdAt = $post['body']['createdAt'];
-			$this->status = $post['body']['status'];
+			$this->initialIp = isset($post['body']['initialIp']) ? $post['body']['initialIp'] : '';
+			$this->createdAt = isset($post['body']['createdAt']) ? $post['body']['createdAt'] : '';
+			$this->status = isset($post['body']['status']) ? $post['body']['status'] : '';
 		}
 		else
 		{
@@ -161,12 +161,13 @@ class LEAccount
 		if($post['status'] === 200)
 		{
 			$this->id = isset($post['body']['id']) ? $post['body']['id'] : '';
-			$this->key = $post['body']['key'];
-			$this->contact = $post['body']['contact'];
+			$this->key =isset($post['body']['key']) ? $post['body']['key'] : '';
+			$this->contact = isset($post['body']['contract']) ? $post['body']['contract'] : '';
 			$this->agreement = isset($post['body']['agreement']) ? $post['body']['agreement'] : '';
-			$this->initialIp = $post['body']['initialIp'];
-			$this->createdAt = $post['body']['createdAt'];
-			$this->status = $post['body']['status'];
+			$this->initialIp = isset($post['body']['initialIp']) ? $post['body']['initialIp'] : '';
+			$this->createdAt = isset($post['body']['createdAt']) ? $post['body']['createdAt'] : '';
+			$this->status = isset($post['body']['status']) ? $post['body']['status'] : '';
+			
 			if($this->log instanceof \Psr\Log\LoggerInterface) 
 			{
 				$this->log->info('Account data updated.');
