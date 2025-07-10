@@ -66,6 +66,6 @@ class LEConnectorException extends LEException
 	public static function InvalidResponseException(array $response)
 	{
 		$statusCode = array_key_exists('status', $response) ? $response['status'] : 'unknown';
-		return new static(sprintf('Invalid response: %s', $statusCode), self::INVALIDRESPONSEEXCEPTION, null, $response);
+		return new static(sprintf('Invalid response: %s - %s', $statusCode, json_encode($response)), self::INVALIDRESPONSEEXCEPTION, null, $response);
 	}
 }
